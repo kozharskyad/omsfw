@@ -1,9 +1,3 @@
-package('omsfw')
-set_project('omsfw')
-set_version('1.0.0')
-add_versions('1.0.0', 'master')
-set_license('LGPL-3.0')
-
 add_rules('mode.debug', 'mode.release')
 add_requires('objfw 1.4.1')
 
