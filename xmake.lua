@@ -1,3 +1,4 @@
+set_license('LGPL-3.0')
 add_rules('mode.debug', 'mode.release')
 add_requires('objfw 1.4.1')
 
