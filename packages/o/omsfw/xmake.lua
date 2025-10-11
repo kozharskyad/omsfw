@@ -1,4 +1,3 @@
-set_version('1.0.0')
 set_license('LGPL-3.0')
 
 add_rules('mode.debug', 'mode.release')
