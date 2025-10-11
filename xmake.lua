@@ -1,0 +1,10 @@
+add_rules('mode.debug', 'mode.release')
+set_license('LGPL-3.0')
+add_requires('objfw 1.4.1')
+
+target('objfwhttptest')
+  set_kind('binary')
+  add_files('src/*.mm')
+  add_includedirs('include', {public = true})
+  add_includedirs('src/include')
+  add_packages('objfw')

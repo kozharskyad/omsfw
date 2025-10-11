@@ -1,0 +1,9 @@
+{
+  "clangd.arguments": [
+    "-header-insertion=never"
+  ],
+  "files.associations": {
+    "*.h": "objective-cpp",
+    "*.m": "objective-cpp"
+  }
+}
