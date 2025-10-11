@@ -1,6 +1,7 @@
 package('omsfw')
 set_project('omsfw')
 set_version('1.0.0')
+add_urls('https://github.com/kozharskyad/omsfw.git')
 add_versions('1.0.0', 'master')
 set_license('LGPL-3.0')
 
