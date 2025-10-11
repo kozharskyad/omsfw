@@ -1,4 +1,3 @@
-set_project('omsfw')
 set_version('1.0.0')
 set_license('LGPL-3.0')
 
