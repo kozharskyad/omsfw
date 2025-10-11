@@ -1,9 +1,12 @@
-add_rules('mode.debug', 'mode.release')
+set_project('omsfw')
+set_version('1.0.0')
 set_license('LGPL-3.0')
+
+add_rules('mode.debug', 'mode.release')
 add_requires('objfw 1.4.1')
 
-target('objfwhttptest')
-  set_kind('binary')
+target('omsfw')
+  set_kind('static')
   add_files('src/*.mm')
   add_includedirs('include', {public = true})
   add_includedirs('src/include')
