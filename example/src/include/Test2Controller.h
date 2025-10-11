@@ -1,7 +1,7 @@
 #import <ObjFW/ObjFW.h>
 #import <OMSFW.h>
 
-@interface Test1Controller : OMSFWController
+@interface Test2Controller : OMSFWController
 
 + (instancetype)controller;
 - (instancetype)init;
