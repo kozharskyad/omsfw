@@ -1,7 +1,7 @@
 #import <ObjFW/ObjFW.h>
-#import "OMSFW/OMSFWController.h"
-#import "OMSFW/OMSFWRequest.h"
-#import "OMSFW/OMSFWResponse.h"
+#import "OMSFWController.h"
+#import "OMSFWRequest.h"
+#import "OMSFWResponse.h"
 
 @implementation OMSFWController {
   OMSFWControllersArray *_controllersArray;
