@@ -1,5 +1,5 @@
 #import <ObjFW/ObjFW.h>
-#import "OMSFWResponse.h"
+#import "OMSFW/OMSFWResponse.h"
 
 @implementation OMSFWResponse
 

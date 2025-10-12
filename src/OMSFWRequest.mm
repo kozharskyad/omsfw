@@ -1,5 +1,5 @@
 #import <ObjFW/ObjFW.h>
-#import "OMSFWRequest.h"
+#import "OMSFW/OMSFWRequest.h"
 
 @implementation OMSFWRequest
 

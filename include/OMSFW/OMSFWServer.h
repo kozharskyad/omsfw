@@ -1,5 +1,5 @@
 #import <ObjFW/ObjFW.h>
-#import "OMSFWController.h"
+#import "OMSFW/OMSFWController.h"
 
 OF_ASSUME_NONNULL_BEGIN
 

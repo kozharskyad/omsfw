@@ -1,7 +1,7 @@
 #import <ObjFW/ObjFW.h>
-#import "OMSFWServer.h"
-#import "OMSFWRequest.h"
-#import "OMSFWResponse.h"
+#import "OMSFW/OMSFWServer.h"
+#import "OMSFW/OMSFWRequest.h"
+#import "OMSFW/OMSFWResponse.h"
 
 @implementation OMSFWServer {
   OFHTTPServer *_httpServer;
