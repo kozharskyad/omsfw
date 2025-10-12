@@ -4,10 +4,12 @@ add_requires('objfw 1.4.1')
 
 target('headers')
   set_kind('headeronly')
+  set_default(true)
   add_headerfiles('include/*.h')
 
 target('omsfw')
   set_kind('static')
+  set_default(true)
   add_files('src/*.mm')
   add_includedirs('include')
   add_packages('objfw')
