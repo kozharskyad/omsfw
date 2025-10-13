@@ -6,10 +6,14 @@ OF_ASSUME_NONNULL_BEGIN
 @interface OMSFWServer : OMSFWController
 
 + (instancetype)serverWithControllers:(OMSFWControllersArray *)controllers;
-+ (instancetype)serverWithControllers:(OMSFWControllersArray *)controllers prefix:(OFString *)prefix port:(uint16_t)port;
++ (instancetype)serverWithControllers:(OMSFWControllersArray *)controllers
+                               prefix:(OFString *)prefix
+                                 port:(uint16_t)port;
 
 - (instancetype)initWithControllers:(OMSFWControllersArray *)controllers;
-- (instancetype)initWithControllers:(OMSFWControllersArray *)controllers prefix:(OFString *)prefix port:(uint16_t)port OF_DESIGNATED_INITIALIZER;
+- (instancetype)initWithControllers:(OMSFWControllersArray *)controllers
+                             prefix:(OFString *)prefix
+                               port:(uint16_t)port OF_DESIGNATED_INITIALIZER;
 - (void)start;
 
 @end

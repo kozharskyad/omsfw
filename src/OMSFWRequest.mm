@@ -3,11 +3,17 @@
 
 @implementation OMSFWRequest
 
-+ (instancetype)requestWithPath:(OFString *)path object:(id)object method:(OMSFWRequestMethod)method {
++ (instancetype)requestWithPath:(OFString *)path
+                         object:(id)object
+                         method:(OMSFWRequestMethod)method
+{
   return [[self alloc] initWithPath:path object:object method:method];
 }
 
-- (instancetype)initWithPath:(OFString *)path object:(id)object method:(OMSFWRequestMethod)method {
+- (instancetype)initWithPath:(OFString *)path
+                      object:(id)object
+                      method:(OMSFWRequestMethod)method
+{
   self = [super init];
 
   _path = path;

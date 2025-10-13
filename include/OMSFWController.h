@@ -11,8 +11,10 @@ typedef enum {
 @class OMSFWResponse;
 @class OMSFWController;
 
-typedef OFMutableDictionary OF_GENERIC(OFString *, OMSFWController *) OMSFWControllersMutableRegistry;
-typedef OFDictionary OF_GENERIC(OFString *, OMSFWController *) OMSFWControllersRegistry;
+typedef OFMutableDictionary OF_GENERIC(OFString *, OMSFWController *)
+  OMSFWControllersMutableRegistry;
+typedef OFDictionary OF_GENERIC(OFString *, OMSFWController *)
+  OMSFWControllersRegistry;
 typedef OFArray OF_GENERIC(OMSFWController *) OMSFWControllersArray;
 
 OF_ASSUME_NONNULL_BEGIN

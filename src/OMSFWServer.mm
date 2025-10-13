@@ -11,14 +11,19 @@
   return [[self alloc] initWithControllers:controllers];
 }
 
-+ (instancetype)serverWithControllers:(OMSFWControllersArray *)controllers prefix:(OFString *)prefix port:(uint16_t)port {
++ (instancetype)serverWithControllers:(OMSFWControllersArray *)controllers
+                               prefix:(OFString *)prefix
+                                 port:(uint16_t)port
+{
   return [[self alloc] initWithControllers:controllers prefix:prefix port:port];
 }
 
 - (instancetype)initWithControllers:(OMSFWControllersArray *)controllers {
   auto environment = [OFApplication environment];
-  auto prefix = [environment objectForKey:@"OMSFW_PREFIX"];
-  auto port = [environment objectForKey:@"OMSFW_PORT"].unsignedShortValue;
+  auto prefix =
+    [environment objectForKey:@"OMSFW_PREFIX"];
+  auto port =
+    [environment objectForKey:@"OMSFW_PORT"].unsignedShortValue;
 
   if (prefix == nil) {
     prefix = @"/";
@@ -33,8 +38,13 @@
   return self;
 }
 
-- (instancetype)initWithControllers:(OMSFWControllersArray *)controllers prefix:(OFString *)prefix port:(uint16_t)port {
-  self = [super initWithType:OMSFWControllerTypeRoot path:prefix controllers:controllers];
+- (instancetype)initWithControllers:(OMSFWControllersArray *)controllers
+                             prefix:(OFString *)prefix
+                               port:(uint16_t)port
+{
+  self = [super initWithType:OMSFWControllerTypeRoot
+                        path:prefix
+                 controllers:controllers];
 
   _httpServer = [OFHTTPServer server];
   _httpServer.name = nil;
@@ -45,7 +55,10 @@
   return self;
 }
 
-- (instancetype)initWithType:(OMSFWControllerType)type path:(OFString *)path controllers:(OMSFWControllersArray *)controllers {
+- (instancetype)initWithType:(OMSFWControllerType)type
+                        path:(OFString *)path
+                 controllers:(OMSFWControllersArray *)controllers
+{
   return [self initWithControllers:controllers prefix:path port:8080];
 }
 
@@ -57,10 +70,18 @@
 
 @implementation OMSFWServer (OFHTTPServerDelegate)
 
-- (void)server:(OFHTTPServer *)server didReceiveRequest:(OFHTTPRequest *)request requestBody:(OFStream *)requestBody response:(OFHTTPResponse *)response {
+- (void)     server:(OFHTTPServer *)server
+  didReceiveRequest:(OFHTTPRequest *)request
+        requestBody:(OFStream *)requestBody
+           response:(OFHTTPResponse *)response
+{
   id requestBodyObject = [requestBody readString].objectByParsingJSON;
 
-  if (![requestBodyObject isKindOfClass:[OFDictionary class]] && ![requestBodyObject isKindOfClass:[OFArray class]] && requestBodyObject != nil) {
+  if (
+    ![requestBodyObject isKindOfClass:[OFDictionary class]] &&
+    ![requestBodyObject isKindOfClass:[OFArray class]] &&
+    requestBodyObject != nil
+  ) {
     response.statusCode = 400;
     response.headers = @{@"Content-Length": @"0"};
     [response writeString:@""];
@@ -91,16 +112,20 @@
       return;
   }
 
-  auto omsfwRequest = [OMSFWRequest requestWithPath:request.IRI.path object:requestBodyObject method:omsfwMethod];
+  auto omsfwRequest = [OMSFWRequest requestWithPath:request.IRI.path
+                                             object:requestBodyObject
+                                             method:omsfwMethod];
   auto omsfwResponse = [self forward:omsfwRequest];
-  auto responseString = omsfwResponse.object.JSONRepresentation;
+  auto responseString =
+    omsfwResponse.object.JSONRepresentation;
 
   response.statusCode = omsfwResponse.status;
 
   if (responseString != nil) {
     response.headers = @{
       @"Content-Type": @"application/json",
-      @"Content-Length": [OFString stringWithFormat:@"%zu", responseString.length]
+      @"Content-Length": [OFString stringWithFormat:@"%zu",
+                                   responseString.length]
     };
   } else {
     responseString = @"";

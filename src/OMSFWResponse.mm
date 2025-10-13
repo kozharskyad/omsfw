@@ -35,7 +35,8 @@
   return [_object JSONRepresentation];
 }
 
-- (OFString *)JSONRepresentationWithOptions:(OFJSONRepresentationOptions)options {
+- (OFString *)JSONRepresentationWithOptions:(OFJSONRepresentationOptions)options
+{
   return [_object JSONRepresentationWithOptions:options];
 }
 
