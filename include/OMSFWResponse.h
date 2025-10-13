@@ -6,6 +6,8 @@ OF_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, retain) id OF_GENERIC(OFJSONRepresentation) object;
 @property (nonatomic, assign) short status;
+@property (nonatomic, retain, nullable)
+  OFDictionary OF_GENERIC(OFString *, OFString *) *headers;
 
 @end
 

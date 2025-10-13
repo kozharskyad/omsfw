@@ -14,15 +14,20 @@ OF_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, readonly, nullable)
   id OF_GENERIC(OFJSONRepresentation) object;
 @property (nonatomic, assign, readonly) OMSFWRequestMethod method;
+@property (nonatomic, copy, nullable, readonly)
+  OFDictionary OF_GENERIC(OFString *, OFString *) *headers;
 
 + (instancetype)requestWithPath:(OFString *)path
-                     object:(nullable id OF_GENERIC(OFJSONRepresentation))object
-                     method:(OMSFWRequestMethod)method;
+              object:(nullable id OF_GENERIC(OFJSONRepresentation))object
+              method:(OMSFWRequestMethod)method
+             headers:(OFDictionary OF_GENERIC(OFString *, OFString *) *)headers;
 
 - (instancetype)init OF_UNAVAILABLE;
 - (instancetype)initWithPath:(OFString *)path
-                    object:(nullable id OF_GENERIC(OFJSONRepresentation))object
-                    method:(OMSFWRequestMethod)method OF_DESIGNATED_INITIALIZER;
+               object:(nullable id OF_GENERIC(OFJSONRepresentation))object
+               method:(OMSFWRequestMethod)method
+              headers:(OFDictionary OF_GENERIC(OFString *, OFString *) *)headers
+              OF_DESIGNATED_INITIALIZER;
 
 @end
 

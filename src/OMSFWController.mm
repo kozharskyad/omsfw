@@ -100,7 +100,8 @@
     [forwardingPathComponents componentsJoinedByString:@"/"];
   auto forwardingRequest = [OMSFWRequest requestWithPath:forwardingPath
                                                   object:request.object
-                                                  method:request.method];
+                                                  method:request.method
+                                                  headers:request.headers];
 
   switch (controller.type) {
     case OMSFWControllerTypeSingleton:

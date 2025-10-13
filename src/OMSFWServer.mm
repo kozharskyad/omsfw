@@ -114,27 +114,31 @@
 
   auto omsfwRequest = [OMSFWRequest requestWithPath:request.IRI.path
                                              object:requestBodyObject
-                                             method:omsfwMethod];
+                                             method:omsfwMethod
+                                             headers:request.headers];
   auto omsfwResponse = [self forward:omsfwRequest];
   auto responseString =
     omsfwResponse.object.JSONRepresentation;
+  OFMutableDictionary OF_GENERIC(OFString *, OFString *) *responseHeaders =
+    [OFMutableDictionary dictionaryWithKeysAndObjects:
+      @"Content-Type", @"application/json",
+      @"Content-Length", [OFString stringWithFormat:@"%zu",
+                                     responseString.length],
+    nil];
 
-  response.statusCode = omsfwResponse.status;
-
-  if (responseString != nil) {
-    response.headers = @{
-      @"Content-Type": @"application/json",
-      @"Content-Length": [OFString stringWithFormat:@"%zu",
-                                   responseString.length]
-    };
-  } else {
-    responseString = @"";
-    response.headers = @{
-      @"Content-Type": @"text/plain",
-      @"Content-Length": @"0"
-    };
+  for (OFString *headerName in omsfwResponse.headers) {
+    auto headerValue = omsfwResponse.headers[headerName];
+    if (headerValue != nil) responseHeaders[headerName] = headerValue;
   }
 
+  if (responseString == nil) {
+    responseHeaders[@"Content-Type"] = @"text/plain";
+    responseHeaders[@"Content-Length"] = @"0";
+  }
+
+  [responseHeaders makeImmutable];
+  response.statusCode = omsfwResponse.status;
+  response.headers = responseHeaders;
   [response writeString:responseString];
 }
 

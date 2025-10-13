@@ -21,6 +21,7 @@
   auto response = [OMSFWResponse response];
 
   response.status = 200;
+  response.headers = @{@"X-Sample-Header": @"sample-header-value"};
   response.object = @{@"message": @"Hello from Test2"};
 
   return response;
