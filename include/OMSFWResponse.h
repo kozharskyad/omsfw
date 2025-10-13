@@ -4,9 +4,9 @@ OF_ASSUME_NONNULL_BEGIN
 
 @interface OMSFWResponse : OFObject
 
-@property (nonatomic, retain) id OF_GENERIC(OFJSONRepresentation) object;
+@property (nonatomic, strong) id OF_GENERIC(OFJSONRepresentation) object;
 @property (nonatomic, assign) short status;
-@property (nonatomic, retain, nullable)
+@property (nonatomic, strong, nullable)
   OFDictionary OF_GENERIC(OFString *, OFString *) *headers;
 
 @end

@@ -1,8 +1,9 @@
 #import <ObjFW/ObjFW.h>
 #import <OMSFW.h>
+#import "Test1Controller.h"
 #import "Test2Controller.h"
 
-@implementation Test2Controller
+@implementation Test1Controller
 
 + (instancetype)controller {
   return [[self alloc] init];
@@ -13,18 +14,15 @@
 }
 
 - (instancetype)init {
-  self = [self initWithType:OMSFWControllerTypeSingleton path:@"test2" controllers:@[]];
+  self = [self initWithType:OMSFWControllerTypeSingleton path:@"test1" controllers:@[
+    [Test2Controller controller]
+  ]];
+
   return self;
 }
 
 - (OMSFWResponse *)handleGet:(OMSFWRequest *)request {
-  auto response = [OMSFWResponse response];
-
-  response.status = 200;
-  response.headers = @{@"X-Sample-Header": @"sample-header-value"};
-  response.object = @{@"message": @"Hello from Test2"};
-
-  return response;
+  return [self forward:request];
 }
 
 @end

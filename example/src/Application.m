@@ -8,13 +8,11 @@
 }
 
 - (void)applicationDidFinishLaunching:(OFNotification *)notification {
-  auto controllers = @[
+  _server = [OMSFWServer serverWithControllers:@[
     [Test1Controller controller]
-  ];
+  ]];
 
-  _server = [OMSFWServer serverWithControllers:controllers];
   [_server start];
-
   OFLog(@"Server started");
 }
 

@@ -22,8 +22,8 @@ OF_ASSUME_NONNULL_BEGIN
 @interface OMSFWController : OFObject
 
 @property (nonatomic, assign, readonly) OMSFWControllerType type;
-@property (nonatomic, retain, readonly) OFString *path;
-@property (nonatomic, retain, readonly) OMSFWControllersRegistry *controllers;
+@property (nonatomic, strong, readonly) OFString *path;
+@property (nonatomic, strong, readonly) OMSFWControllersRegistry *controllers;
 
 + (instancetype)controllerWithType:(OMSFWControllerType)type
                               path:(OFString *)path

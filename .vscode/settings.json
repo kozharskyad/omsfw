@@ -3,7 +3,7 @@
     "-header-insertion=never"
   ],
   "files.associations": {
-    "*.h": "objective-cpp",
-    "*.m": "objective-cpp"
+    "*.h": "objective-c",
+    "*.m": "objective-c"
   }
 }

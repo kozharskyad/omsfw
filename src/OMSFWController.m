@@ -23,7 +23,7 @@
   _type = type;
   _path = path;
 
-  auto registry =
+  OMSFWControllersMutableRegistry *registry =
     [OMSFWControllersMutableRegistry dictionaryWithCapacity:controllers.count];
 
   for (OMSFWController *controller in controllers) {
@@ -54,15 +54,15 @@
 }
 
 - (OMSFWResponse *)forward:(OMSFWRequest *)request {
-  auto requestPath = request.path;
-  auto prefixPathLength = _path.length;
+  OFString *requestPath = request.path;
+  size_t prefixPathLength = _path.length;
 
   if (_type == OMSFWControllerTypeRoot) {
     if (requestPath.length < prefixPathLength) {
       return [OMSFWResponse response404];
     }
 
-    auto pathHead =
+    OFString *pathHead =
       [requestPath substringToIndex:prefixPathLength];
 
     if (![pathHead isEqual:_path]) {
@@ -72,36 +72,36 @@
     requestPath = [requestPath substringFromIndex:prefixPathLength];
   }
 
-  auto currentPathComponents =
+  OFArray<OFString *> *currentPathComponents =
     [requestPath componentsSeparatedByString:@"/"
                                      options:OFStringSkipEmptyComponents];
-  auto currentPathComponentsCount = currentPathComponents.count;
+  size_t currentPathComponentsCount = currentPathComponents.count;
 
   if (currentPathComponentsCount == 0) {
     return [OMSFWResponse response404];
   }
 
-  auto firstComponent =
+  OFString *firstComponent =
     currentPathComponents.firstObject;
-  auto controller = [_controllers objectForKey:firstComponent];
+  OMSFWController *controller = [_controllers objectForKey:firstComponent];
 
   if (controller == nil) {
     return [OMSFWResponse response404];
   }
 
-  auto forwardingPathComponents = [OFMutableArray array];
+  OFMutableArray<OFString *> *forwardingPathComponents = [OFMutableArray array];
 
   for (size_t i = 1; i < currentPathComponentsCount; i++) {
     [forwardingPathComponents
       addObject:[currentPathComponents objectAtIndex:i]];
   }
 
-  auto forwardingPath =
+  OFString *forwardingPath =
     [forwardingPathComponents componentsJoinedByString:@"/"];
-  auto forwardingRequest = [OMSFWRequest requestWithPath:forwardingPath
-                                                  object:request.object
-                                                  method:request.method
-                                                  headers:request.headers];
+  OMSFWRequest *forwardingRequest = [OMSFWRequest requestWithPath:forwardingPath
+                                                        object:request.object
+                                                        method:request.method
+                                                       headers:request.headers];
 
   switch (controller.type) {
     case OMSFWControllerTypeSingleton:
@@ -109,9 +109,9 @@
       break;
 
     case OMSFWControllerTypeStateless:
-      controller = [controller.class_ controllerWithType:controller.type
-                                                    path:forwardingPath
-                                             controllers:_controllersArray];
+      controller = [controller.class controllerWithType:controller.type
+                                                   path:forwardingPath
+                                            controllers:_controllersArray];
       break;
 
     case OMSFWControllerTypeNone:

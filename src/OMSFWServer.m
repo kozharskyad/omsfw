@@ -19,10 +19,11 @@
 }
 
 - (instancetype)initWithControllers:(OMSFWControllersArray *)controllers {
-  auto environment = [OFApplication environment];
-  auto prefix =
+  OFDictionary<OFString *, OFString *> *environment =
+    [OFApplication environment];
+  OFString *prefix =
     [environment objectForKey:@"OMSFW_PREFIX"];
-  auto port =
+  unsigned short port =
     [environment objectForKey:@"OMSFW_PORT"].unsignedShortValue;
 
   if (prefix == nil) {
@@ -112,12 +113,12 @@
       return;
   }
 
-  auto omsfwRequest = [OMSFWRequest requestWithPath:request.IRI.path
-                                             object:requestBodyObject
-                                             method:omsfwMethod
-                                             headers:request.headers];
-  auto omsfwResponse = [self forward:omsfwRequest];
-  auto responseString =
+  OMSFWRequest *omsfwRequest = [OMSFWRequest requestWithPath:request.IRI.path
+                                                      object:requestBodyObject
+                                                      method:omsfwMethod
+                                                     headers:request.headers];
+  OMSFWResponse *omsfwResponse = [self forward:omsfwRequest];
+  OFString *responseString =
     omsfwResponse.object.JSONRepresentation;
   OFMutableDictionary OF_GENERIC(OFString *, OFString *) *responseHeaders =
     [OFMutableDictionary dictionaryWithKeysAndObjects:
@@ -127,7 +128,7 @@
     nil];
 
   for (OFString *headerName in omsfwResponse.headers) {
-    auto headerValue = omsfwResponse.headers[headerName];
+    OFString *headerValue = omsfwResponse.headers[headerName];
     if (headerValue != nil) responseHeaders[headerName] = headerValue;
   }
 

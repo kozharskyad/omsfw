@@ -14,19 +14,19 @@
 }
 
 + (instancetype)response404 {
-  auto response = [self response];
+  OMSFWResponse *response = [self response];
   response.status = 404;
   return response;
 }
 
 + (instancetype)response405 {
-  auto response = [self response];
+  OMSFWResponse *response = [self response];
   response.status = 405;
   return response;
 }
 
 + (instancetype)response500 {
-  auto response = [self response];
+  OMSFWResponse *response = [self response];
   response.status = 500;
   return response;
 }

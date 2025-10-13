@@ -10,8 +10,8 @@ OF_ASSUME_NONNULL_BEGIN
 
 @interface OMSFWRequest : OFObject
 
-@property (nonatomic, retain, readonly) OFString *path;
-@property (nonatomic, retain, readonly, nullable)
+@property (nonatomic, strong, readonly) OFString *path;
+@property (nonatomic, strong, readonly, nullable)
   id OF_GENERIC(OFJSONRepresentation) object;
 @property (nonatomic, assign, readonly) OMSFWRequestMethod method;
 @property (nonatomic, copy, nullable, readonly)
