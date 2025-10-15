@@ -2,6 +2,7 @@
 #import "OMSFWServer.h"
 #import "OMSFWRequest.h"
 #import "OMSFWResponse.h"
+#import "OMSFWException.h"
 
 @implementation OMSFWServer {
   OFHTTPServer *_httpServer;
@@ -76,47 +77,20 @@
         requestBody:(OFStream *)requestBody
            response:(OFHTTPResponse *)response
 {
-  id requestBodyObject = [requestBody readString].objectByParsingJSON;
+  OMSFWRequest *omsfwRequest;
 
-  if (
-    ![requestBodyObject isKindOfClass:[OFDictionary class]] &&
-    ![requestBodyObject isKindOfClass:[OFArray class]] &&
-    requestBodyObject != nil
-  ) {
-    response.statusCode = 400;
+  @try {
+    omsfwRequest = [OMSFWRequest requestWithObject:[requestBody readString] ofhttpRequest:request];
+  } @catch (OMSFWException *exception) {
+    response.statusCode = exception.code;
     response.headers = @{@"Content-Length": @"0"};
     [response writeString:@""];
+
+    OFLog(@"Server fatal exception: %@", exception.message);
 
     return;
   }
 
-  OMSFWRequestMethod omsfwMethod;
-
-  switch (request.method) {
-    case OFHTTPRequestMethodGet:
-      omsfwMethod = OMSFWRequestMethodGet;
-      break;
-
-    case OFHTTPRequestMethodPost:
-      omsfwMethod = OMSFWRequestMethodPost;
-      break;
-
-    case OFHTTPRequestMethodDelete:
-      omsfwMethod = OMSFWRequestMethodDelete;
-      break;
-
-    default:
-      response.statusCode = 400;
-      response.headers = @{@"Content-Length": @"0"};
-      [response writeString:@""];
-
-      return;
-  }
-
-  OMSFWRequest *omsfwRequest = [OMSFWRequest requestWithPath:request.IRI.path
-                                                      object:requestBodyObject
-                                                      method:omsfwMethod
-                                                     headers:request.headers];
   OMSFWResponse *omsfwResponse = [self forward:omsfwRequest];
   OFString *responseString =
     omsfwResponse.object.JSONRepresentation;
@@ -133,6 +107,7 @@
   }
 
   if (responseString == nil) {
+    responseString = @"";
     responseHeaders[@"Content-Type"] = @"text/plain";
     responseHeaders[@"Content-Length"] = @"0";
   }

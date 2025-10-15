@@ -2,6 +2,7 @@
 #import "OMSFWController.h"
 #import "OMSFWRequest.h"
 #import "OMSFWResponse.h"
+#import "OMSFWException.h"
 
 @implementation OMSFWController {
   OMSFWControllersArray *_controllersArray;
@@ -89,19 +90,18 @@
     return [OMSFWResponse response404];
   }
 
-  OFMutableArray<OFString *> *forwardingPathComponents = [OFMutableArray array];
+  OMSFWRequest *forwardingRequest;
 
-  for (size_t i = 1; i < currentPathComponentsCount; i++) {
-    [forwardingPathComponents
-      addObject:[currentPathComponents objectAtIndex:i]];
+  @try {
+    forwardingRequest = [OMSFWRequest forwardingRequest:request];
+  } @catch (OMSFWException *exception) {
+    OMSFWResponse *response = [OMSFWResponse response];
+
+    response.status = exception.code;
+    OFLog(@"Forwarding fatal exception: %@", exception.message);
+
+    return response;
   }
-
-  OFString *forwardingPath =
-    [forwardingPathComponents componentsJoinedByString:@"/"];
-  OMSFWRequest *forwardingRequest = [OMSFWRequest requestWithPath:forwardingPath
-                                                        object:request.object
-                                                        method:request.method
-                                                       headers:request.headers];
 
   switch (controller.type) {
     case OMSFWControllerTypeSingleton:
@@ -110,7 +110,7 @@
 
     case OMSFWControllerTypeStateless:
       controller = [controller.class controllerWithType:controller.type
-                                                   path:forwardingPath
+                                                   path:forwardingRequest.path
                                             controllers:_controllersArray];
       break;
 
@@ -119,18 +119,27 @@
       return [OMSFWResponse response500];
   }
 
-  switch (request.method) {
-    case OMSFWRequestMethodGet:
-      return [controller handleGet:forwardingRequest];
+  @try {
+    switch (request.method) {
+      case OMSFWRequestMethodGet:
+        return [controller handleGet:forwardingRequest];
 
-    case OMSFWRequestMethodPost:
-      return [controller handlePost:forwardingRequest];
+      case OMSFWRequestMethodPost:
+        return [controller handlePost:forwardingRequest];
 
-    case OMSFWRequestMethodDelete:
-      return [controller handleDelete:forwardingRequest];
+      case OMSFWRequestMethodDelete:
+        return [controller handleDelete:forwardingRequest];
 
-    default:
-      return [OMSFWResponse response405];
+      default:
+        @throw [OMSFWException exceptionWithCode:405 message:@"Invalid HTTP method"];
+    }
+  } @catch (OMSFWException *exception) {
+    OMSFWResponse *response = [OMSFWResponse response];
+
+    response.status = exception.code;
+    OFLog(@"Handling fatal exception: %@", exception.message);
+
+    return response;
   }
 }
 
